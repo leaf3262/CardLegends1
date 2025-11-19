@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class HandManager : MonoBehaviour
 {
     [Header("Settings")]
@@ -59,46 +60,39 @@ public class HandManager : MonoBehaviour
         {
             Debug.Log("No more cards to draw");
             return;
-        }
+        } 
+        GameObject cardObj = Instantiate(cardPrefab);
 
-        GameObject cardObj = Instantiate(cardPrefab, handContainer);
-        Card card = cardObj.GetComponent<Card>();
-
-        if (card != null)
+        if (cardObj != null && handContainer != null)
         {
-            card.Initialize(cardData);
-            card.OnCardClicked += OnCardClicked;
-            cardsInHand.Add(card);
-            RefreshHandLayout();
+      
+            cardObj.transform.SetParent(handContainer, false);
+
+            Card card = cardObj.GetComponent<Card>();
+
+            if (card != null)
+            {
+                card.Initialize(cardData);
+                card.OnCardClicked += OnCardClicked;
+                cardsInHand.Add(card);
+
+                RefreshHandLayout();
+            }
         }
     }
-
     private void OnCardClicked(Card clickedCard)
     {
-        if (RoundManager.Instance != null)
+        if (clickedCard.IsSelected)
         {
-            RoundManager.Instance.ToggleCardSelection(clickedCard);
+            clickedCard.SetSelected(false);
+            Debug.Log($"Deselected: {clickedCard.CardData.GetDisplayName()}");
         }
         else
         {
-            if (selectedCard == clickedCard)
-            {
-                selectedCard.SetSelected(false);
-                selectedCard = null;
-                return;
-            }
-
-            if (selectedCard != null)
-            {
-                selectedCard.SetSelected(false);
-            }
-
-            selectedCard = clickedCard;
-            selectedCard.SetSelected(true);
+            clickedCard.SetSelected(true);
+            Debug.Log($"Selected: {clickedCard.CardData.GetDisplayName()}");
         }
     }
-
-
     public void DiscardSelectedCard()
     {
         if (selectedCard == null)
@@ -158,4 +152,25 @@ public class HandManager : MonoBehaviour
         cardsInHand.Clear();
     }
 
+    public List<Card> GetSelectedCards()
+    {
+        List<Card> selected = new List<Card>();
+
+        Debug.Log($"[HandManager] Checking {cardsInHand.Count} cards in hand");
+
+        foreach (Card card in cardsInHand)
+        {
+            if (card != null)
+            {
+                Debug.Log($"  Card: {card.CardData.GetDisplayName()} - Selected: {card.IsSelected}");
+
+                if (card.IsSelected)
+                {
+                    selected.Add(card);
+                }
+            }
+        }
+        Debug.Log($"[HandManager] Found {selected.Count} selected cards");
+        return selected;
+    }
 }

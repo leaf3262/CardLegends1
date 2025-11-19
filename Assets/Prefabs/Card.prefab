@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8945657811926686074}
   - component: {fileID: 7207870347287828371}
   - component: {fileID: 268271048771928924}
+  - component: {fileID: 7976813200887673506}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -144,6 +145,18 @@ MonoBehaviour:
   suitText: {fileID: 6477436919963612076}
   cardNameText: {fileID: 6719270345806746725}
   hoverScale: 1.1
+--- !u!114 &7976813200887673506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386265676800574819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8621a0496422695459b30e8251c50734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAnimator
 --- !u!1 &2547836303339199950
 GameObject:
   m_ObjectHideFlags: 0

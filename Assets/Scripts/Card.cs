@@ -14,6 +14,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI suitText;
     [SerializeField] private TextMeshProUGUI cardNameText;
+    [SerializeField] private CardAnimator cardAnimator;
 
     [Header("Settings")]
     [SerializeField] private float hoverScale = 1.1f;
@@ -30,6 +31,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void Awake()
     {
         button = GetComponent<Button>();
+        cardAnimator = GetComponent<CardAnimator>();
         originalScale = transform.localScale;
 
         if (button != null)
@@ -123,8 +125,16 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void HandleCardClick()
     {
         Debug.Log($"Card clicked: {cardData.GetDisplayName()}");
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayCardSelect();
+        }
+
         OnCardClicked?.Invoke(this);
+        Debug.Log($"Card IsSelected now: {isSelected}");
     }
+
 
     public void SetSelected(bool selected)
     {
@@ -132,15 +142,17 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if (selected)
         {
+         
             transform.localPosition = new Vector3(transform.localPosition.x, 30f, transform.localPosition.z);
 
             if (cardImage != null)
             {
-                cardImage.color = new Color(1f, 1f, 0.7f);
+                cardImage.color = new Color(1f, 1f, 0.7f); 
             }
         }
         else
         {
+         
             transform.localPosition = new Vector3(transform.localPosition.x, 0f, transform.localPosition.z);
 
             if (cardImage != null)
@@ -153,11 +165,25 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.localScale = originalScale * hoverScale;
+        if (cardAnimator != null)
+        {
+            cardAnimator.AnimateHover(true);
+        }
+        else
+        {
+            transform.localScale = originalScale * hoverScale;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = originalScale;
+        if (cardAnimator != null)
+        {
+            cardAnimator.AnimateHover(false);
+        }
+        else
+        {
+            transform.localScale = originalScale;
+        }
     }
 }

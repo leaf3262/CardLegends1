@@ -20,14 +20,31 @@ public class SceneLoader : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         Debug.Log($"Loading scene: {sceneName}");
-        SceneManager.LoadScene(sceneName);
+
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadSceneWithTransition(sceneName);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
     public void LoadScene(int sceneIndex)
     {
         Debug.Log($"Loading scene index: {sceneIndex}");
-        SceneManager.LoadScene(sceneIndex);
+
+        if (SceneTransition.Instance != null)
+        {
+            SceneTransition.Instance.LoadSceneWithTransition(sceneIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
+
 
     public void ReloadCurrentScene()
     {
