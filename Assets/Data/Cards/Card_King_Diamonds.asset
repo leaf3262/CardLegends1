@@ -18,5 +18,5 @@ MonoBehaviour:
   rank: 13
   powerDescription: 
   powerCost: 0
-  cardSprite: {fileID: 0}
+  cardSprite: {fileID: 21300000, guid: c5d25302245957940b5063fb4ca5c65b, type: 3}
   cardColor: {r: 1, g: 0, b: 0, a: 1}
